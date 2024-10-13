@@ -1,8 +1,4 @@
-<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
-
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#advancednodestarter)
-
-# ➤ AdvancedNodeStarter
+# AdvancedNodeStarter
 
 Starting project to be a building block
 

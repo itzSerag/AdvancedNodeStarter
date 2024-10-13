@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-
+const SessionFactory = require("./factories/sessionFactory");
 let browser, page;
 
 beforeAll(async () => {
@@ -10,8 +10,6 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  // Reset page state before each test if needed
-  // if we added one more it will create new instance
   await page.goto("http://localhost:3000");
 });
 
@@ -30,13 +28,26 @@ test("OPEN CHROME", async () => {
 test("Clicking on login with Google", async () => {
   await page.click(".right a");
   const currURL = await page.url();
-  console.log(currURL);
-
-  // the test answer
-  // we can use toMatch
   expect(currURL).toContain("accounts.google.com");
 });
 
-afterAll(async () => {
-  await browser.close();
+test("When we signed in show logout button", async () => {
+  const id = "66f47f8a2a76c57f7252f54a";
+
+  const { session, sig } = SessionFactory();
+
+  await page.setCookie({ name: "session", value: session });
+  await page.setCookie({ name: "session.sig", value: sig });
+
+  await page.goto("http://localhost:3000"); // Use await here to ensure page loads
+  const logoutButton = await page.$eval(
+    ".right > li > a[href='/auth/logout']",
+    (el) => el.innerHTML
+  );
+  expect(logoutButton).toEqual("Logout");
+});
+
+afterEach(async () => {
+  // Close the browser if needed, or leave it as is for debugging purposes
+  // await browser.close();
 });
